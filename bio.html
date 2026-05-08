@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matthew Mallia</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, 'Segoe UI', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #1a1a1a;
+        }
+
+        /* ── Top bar ── */
+        .topbar {
+            background: #0a0a0a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 48px;
+            border-bottom: 2px solid #c9a84c;
+        }
+
+        .topbar-brand {
+            font-family: Georgia, serif;
+            font-size: 15px;
+            letter-spacing: 3px;
+            color: white;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .topbar-nav { display: flex; align-items: center; gap: 4px; }
+
+        .topbar-nav a {
+            color: #888;
+            text-decoration: none;
+            font-size: 13px;
+            padding: 6px 14px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .topbar-nav a:hover { color: white; background: #1a1a1a; }
+        .topbar-nav a.active { color: white; }
+
+        .edit-toggle {
+            background: none;
+            border: 1px solid #333;
+            color: #888;
+            font-size: 13px;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 16px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .edit-toggle:hover { border-color: #666; color: white; }
+        body.editing .edit-toggle { background: #e63946; border-color: #e63946; color: white; }
+
+        /* ── Hero ── */
+        .hero {
+            background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+            color: white;
+            padding: 80px 48px 72px;
+        }
+
+        .hero-inner {
+            max-width: 860px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 56px;
+        }
+
+        .hero-text { flex: 1; }
+
+        .hero-label {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #e63946;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .hero-name {
+            font-family: Georgia, serif;
+            font-size: 52px;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+        }
+
+        .hero-role {
+            font-size: 18px;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+
+        .hero-tagline {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #777;
+            max-width: 480px;
+            margin-bottom: 36px;
+        }
+
+        .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+        .btn-primary {
+            background: #e63946;
+            color: white;
+            text-decoration: none;
+            padding: 12px 26px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.2s;
+            display: inline-block;
+        }
+
+        .btn-primary:hover { background: #c0303b; }
+
+        .btn-secondary {
+            background: transparent;
+            color: #ccc;
+            text-decoration: none;
+            padding: 11px 26px;
+            border-radius: 6px;
+            font-size: 14px;
+            border: 1px solid #333;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover { border-color: #888; color: white; }
+
+        .btn-secondary.no-cv { opacity: 0.4; pointer-events: none; }
+
+        .avatar {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: #2a2a2a;
+            border: 2px solid #333;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Georgia, serif;
+            font-size: 40px;
+            color: #666;
+            letter-spacing: 1px;
+        }
+
+        /* ── Content ── */
+        .content {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 56px 48px 80px;
+        }
+
+        .section { margin-bottom: 48px; }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #999;
+        }
+
+        .section-line {
+            flex: 1;
+            height: 1px;
+            background: #e8e8e8;
+        }
+
+        .about-text {
+            font-family: Georgia, serif;
+            font-size: 17px;
+            line-height: 1.9;
+            color: #333;
+            white-space: pre-wrap;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .detail-cell {
+            padding: 18px 22px;
+            border-bottom: 1px solid #f0f0f0;
+            border-right: 1px solid #f0f0f0;
+        }
+
+        .detail-cell:nth-child(even) { border-right: none; }
+        .detail-cell:nth-last-child(-n+2) { border-bottom: none; }
+
+        .detail-key {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #bbb;
+            margin-bottom: 5px;
+        }
+
+        .detail-val {
+            font-size: 15px;
+            color: #222;
+        }
+
+        .detail-val a {
+            color: #1a1a1a;
+            text-decoration: none;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .detail-val a:hover { border-color: #e63946; color: #e63946; }
+
+        .interests { display: flex; flex-wrap: wrap; gap: 10px; }
+
+        .tag {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 7px 18px;
+            font-size: 13px;
+            color: #444;
+        }
+
+        .social-grid { display: flex; gap: 12px; flex-wrap: wrap; }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 22px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .social-link:hover { border-color: #aaa; color: #111; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+
+        /* ── Edit mode ── */
+        .view-only { display: block; }
+        .edit-only  { display: none; }
+
+        body.editing .view-only { display: none; }
+        body.editing .edit-only  { display: block; }
+
+        .field {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            font-family: inherit;
+            background: white;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .field:focus { border-color: #4f46e5; }
+
+        textarea.field {
+            font-family: Georgia, serif;
+            font-size: 16px;
+            line-height: 1.8;
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .field-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 7px;
+            display: block;
+        }
+
+        .field-hint { font-size: 12px; color: #aaa; margin-top: 5px; }
+
+        .edit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+        .edit-row { display: flex; align-items: center; gap: 12px; }
+        .edit-row-label { font-size: 13px; color: #888; width: 90px; flex-shrink: 0; }
+
+        .cv-upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .cv-upload-area:hover { border-color: #aaa; }
+        .cv-upload-area input { display: none; }
+
+        .cv-upload-text { font-size: 14px; color: #888; }
+        .cv-upload-text strong { color: #333; }
+        .cv-status { font-size: 13px; color: #16a34a; margin-top: 8px; }
+
+        /* ── Save bar ── */
+        .save-bar {
+            display: none;
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            gap: 10px;
+            align-items: center;
+            z-index: 100;
+        }
+
+        body.editing .save-bar { display: flex; }
+
+        .save-btn {
+            background: #111;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+            transition: background 0.2s;
+        }
+
+        .save-btn:hover { background: #333; }
+
+        .cancel-btn {
+            background: white;
+            color: #555;
+            border: 1px solid #ddd;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .cancel-btn:hover { background: #f5f5f5; }
+
+        .saved-badge {
+            background: #d1fae5;
+            border: 1px solid #6ee7b7;
+            color: #065f46;
+            font-size: 13px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        footer {
+            background: #0a0a0a;
+            color: #555;
+            text-align: center;
+            padding: 28px;
+            font-size: 13px;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        @media (max-width: 640px) {
+            .topbar { padding: 14px 20px; }
+            .hero { padding: 52px 20px 48px; }
+            .hero-inner { flex-direction: column-reverse; gap: 28px; }
+            .hero-name { font-size: 36px; }
+            .avatar { width: 90px; height: 90px; font-size: 28px; }
+            .content { padding: 40px 20px 60px; }
+            .details-grid { grid-template-columns: 1fr; }
+            .detail-cell:nth-child(even) { border-right: none; }
+            .detail-cell:nth-last-child(-n+2) { border-bottom: 1px solid #f0f0f0; }
+            .detail-cell:last-child { border-bottom: none; }
+            .edit-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+    <a href="/" class="topbar-brand">Matthew Mallia</a>
+    <div class="topbar-nav">
+        <a href="/articles">Articles</a>
+        <a href="/" class="active">About</a>
+        <button class="edit-toggle" onclick="toggleEdit()">Edit Profile</button>
+    </div>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+    <div class="hero-inner">
+        <div class="hero-text">
+            <div class="hero-label view-only" id="display-role-label"></div>
+            <div class="edit-only" style="margin-bottom:16px;">
+                <label class="field-label" style="color:#666;">Role / Title</label>
+                <input class="field" id="edit-role" placeholder="e.g. Writer & Analyst" style="background:#1a1a1a;border-color:#333;color:white;">
+            </div>
+
+            <h1 class="hero-name">Matthew Mallia</h1>
+
+            <div class="hero-role view-only" id="display-role"></div>
+            <div class="hero-tagline view-only" id="display-tagline"></div>
+
+            <div class="edit-only" style="margin-bottom:16px;margin-top:8px;">
+                <label class="field-label" style="color:#666;">Tagline</label>
+                <input class="field" id="edit-tagline" placeholder="Short description shown under your name" style="background:#1a1a1a;border-color:#333;color:white;">
+            </div>
+
+            <div class="hero-actions">
+                <a href="/cv" class="btn-primary" id="cv-download-btn" target="_blank">Download CV</a>
+                <a href="/articles" class="btn-secondary">View Articles &#8594;</a>
+            </div>
+        </div>
+        <div class="avatar" id="avatar-initials">MM</div>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="content">
+
+    <div class="section">
+        <div class="section-header">
+            <span class="section-label">About</span>
+            <div class="section-line"></div>
+        </div>
+        <div class="about-text view-only" id="display-about"></div>
+        <div class="edit-only">
+            <textarea class="field" id="edit-about" placeholder="Write about yourself — your background, what drives your writing, and what readers can expect..."></textarea>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header">
+            <span class="section-label">Details</span>
+            <div class="section-line"></div>
+        </div>
+        <div class="details-grid view-only">
+            <div class="detail-cell">
+                <div class="detail-key">Location</div>
+                <div class="detail-val" id="display-location"></div>
+            </div>
+            <div class="detail-cell">
+                <div class="detail-key">Email</div>
+                <div class="detail-val" id="display-email"></div>
+            </div>
+            <div class="detail-cell">
+                <div class="detail-key">Focus Areas</div>
+                <div class="detail-val" id="display-focused"></div>
+            </div>
+            <div class="detail-cell">
+                <div class="detail-key">Languages</div>
+                <div class="detail-val" id="display-languages"></div>
+            </div>
+        </div>
+        <div class="edit-only edit-grid">
+            <div>
+                <label class="field-label">Location</label>
+                <input class="field" id="edit-location" placeholder="City, Country">
+            </div>
+            <div>
+                <label class="field-label">Email</label>
+                <input class="field" id="edit-email" type="email" placeholder="your@email.com">
+            </div>
+            <div>
+                <label class="field-label">Focus Areas</label>
+                <input class="field" id="edit-focused" placeholder="Football, Economy, Companies">
+            </div>
+            <div>
+                <label class="field-label">Languages</label>
+                <input class="field" id="edit-languages" placeholder="English, Maltese">
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header">
+            <span class="section-label">Interests</span>
+            <div class="section-line"></div>
+        </div>
+        <div class="interests view-only" id="display-interests"></div>
+        <div class="edit-only">
+            <input class="field" id="edit-interests" placeholder="Football Analytics, Macroeconomics, Business Strategy, ...">
+            <div class="field-hint">Separate each interest with a comma</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header">
+            <span class="section-label">Find Me Online</span>
+            <div class="section-line"></div>
+        </div>
+        <div class="social-grid view-only" id="display-social"></div>
+        <div class="edit-only" style="display:flex;flex-direction:column;gap:14px;">
+            <div class="edit-row">
+                <span class="edit-row-label">LinkedIn</span>
+                <input class="field" id="edit-linkedin" placeholder="https://linkedin.com/in/yourname">
+            </div>
+            <div class="edit-row">
+                <span class="edit-row-label">X / Twitter</span>
+                <input class="field" id="edit-twitter" placeholder="https://x.com/yourhandle">
+            </div>
+            <div class="edit-row">
+                <span class="edit-row-label">Instagram</span>
+                <input class="field" id="edit-instagram" placeholder="https://instagram.com/yourhandle">
+            </div>
+        </div>
+    </div>
+
+    <div class="section edit-only">
+        <div class="section-header">
+            <span class="section-label">CV / Resume</span>
+            <div class="section-line"></div>
+        </div>
+        <div class="cv-upload-area" onclick="document.getElementById('cv-file-input').click()">
+            <input type="file" id="cv-file-input" accept=".pdf" onchange="uploadCV(this)">
+            <div class="cv-upload-text"><strong>Click to upload your CV</strong> (PDF only)</div>
+            <div class="cv-status" id="cv-status" style="display:none"></div>
+        </div>
+    </div>
+
+</div>
+
+<div class="save-bar">
+    <span class="saved-badge" id="saved-badge">Saved!</span>
+    <button class="cancel-btn" onclick="cancelEdit()">Cancel</button>
+    <button class="save-btn" onclick="saveBio()">Save Changes</button>
+</div>
+
+<footer>
+    &copy; 2026 Matthew Mallia. All rights reserved.
+</footer>
+
+<script>
+    let originalData = null;
+
+    async function loadBio() {
+        const res = await fetch('/api/bio');
+        const bio = await res.json();
+        originalData = JSON.parse(JSON.stringify(bio));
+        render(bio);
+        populate(bio);
+        updateCVButton(bio.has_cv);
+    }
+
+    function render(bio) {
+        document.title = `${bio.name || 'Matthew Mallia'} — About`;
+        const initials = (bio.name || 'MM').split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+        document.getElementById('avatar-initials').textContent = initials;
+        document.getElementById('display-role-label').textContent = bio.role || '';
+        document.getElementById('display-role').textContent = bio.role || '';
+        document.getElementById('display-tagline').textContent = bio.tagline || '';
+        document.getElementById('display-about').textContent = bio.about || '';
+        document.getElementById('display-location').textContent = bio.location || '—';
+        document.getElementById('display-email').innerHTML = bio.email
+            ? `<a href="mailto:${bio.email}">${bio.email}</a>` : '—';
+        document.getElementById('display-focused').textContent = bio.focused_on || '—';
+        document.getElementById('display-languages').textContent = bio.languages || '—';
+
+        document.getElementById('display-interests').innerHTML =
+            (bio.interests || []).map(i => `<span class="tag">${i}</span>`).join('');
+
+        const socialLinks = [
+            { label: 'LinkedIn', url: bio.linkedin },
+            { label: 'X / Twitter', url: bio.twitter },
+            { label: 'Instagram', url: bio.instagram },
+        ].filter(l => l.url);
+
+        document.getElementById('display-social').innerHTML = socialLinks.length
+            ? socialLinks.map(l => `<a href="${l.url}" class="social-link" target="_blank">${l.label} &#8599;</a>`).join('')
+            : '<span style="font-size:14px;color:#bbb;">No links added yet.</span>';
+    }
+
+    function populate(bio) {
+        document.getElementById('edit-role').value = bio.role || '';
+        document.getElementById('edit-tagline').value = bio.tagline || '';
+        document.getElementById('edit-about').value = bio.about || '';
+        document.getElementById('edit-location').value = bio.location || '';
+        document.getElementById('edit-email').value = bio.email || '';
+        document.getElementById('edit-focused').value = bio.focused_on || '';
+        document.getElementById('edit-languages').value = bio.languages || '';
+        document.getElementById('edit-interests').value = (bio.interests || []).join(', ');
+        document.getElementById('edit-linkedin').value = bio.linkedin || '';
+        document.getElementById('edit-twitter').value = bio.twitter || '';
+        document.getElementById('edit-instagram').value = bio.instagram || '';
+    }
+
+    function updateCVButton(hasCv) {
+        const btn = document.getElementById('cv-download-btn');
+        if (hasCv) {
+            btn.classList.remove('no-cv');
+            btn.title = '';
+        } else {
+            btn.classList.add('no-cv');
+            btn.title = 'No CV uploaded yet';
+        }
+    }
+
+    async function uploadCV(input) {
+        const file = input.files[0];
+        if (!file) return;
+        const status = document.getElementById('cv-status');
+        status.style.display = 'block';
+        status.textContent = 'Uploading...';
+
+        const form = new FormData();
+        form.append('cv', file);
+        const res = await fetch('/api/bio/cv', { method: 'POST', body: form });
+        if (res.ok) {
+            status.textContent = 'CV uploaded successfully — ' + file.name;
+            updateCVButton(true);
+            originalData.has_cv = true;
+        } else {
+            status.style.color = '#e63946';
+            status.textContent = 'Upload failed. Please try again.';
+        }
+    }
+
+    function toggleEdit() {
+        document.body.classList.toggle('editing');
+    }
+
+    function cancelEdit() {
+        populate(originalData);
+        document.body.classList.remove('editing');
+    }
+
+    async function saveBio() {
+        const bio = {
+            name: 'Matthew Mallia',
+            role: document.getElementById('edit-role').value,
+            tagline: document.getElementById('edit-tagline').value,
+            about: document.getElementById('edit-about').value,
+            location: document.getElementById('edit-location').value,
+            email: document.getElementById('edit-email').value,
+            focused_on: document.getElementById('edit-focused').value,
+            languages: document.getElementById('edit-languages').value,
+            interests: document.getElementById('edit-interests').value
+                .split(',').map(s => s.trim()).filter(Boolean),
+            linkedin: document.getElementById('edit-linkedin').value,
+            twitter: document.getElementById('edit-twitter').value,
+            instagram: document.getElementById('edit-instagram').value,
+            has_cv: originalData.has_cv || false,
+        };
+
+        await fetch('/api/bio', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bio),
+        });
+
+        originalData = JSON.parse(JSON.stringify(bio));
+        render(bio);
+
+        const badge = document.getElementById('saved-badge');
+        badge.style.display = 'block';
+        setTimeout(() => { badge.style.display = 'none'; }, 2000);
+        document.body.classList.remove('editing');
+    }
+
+    loadBio();
+</script>
+
+</body>
+</html>

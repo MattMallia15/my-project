@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matthew Mallia</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: #fafafa;
+            color: #1a1a1a;
+        }
+
+        header {
+            background: #111;
+            color: white;
+            padding: 24px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 26px;
+            letter-spacing: 3px;
+        }
+
+        .header-sub {
+            font-size: 11px;
+            font-family: Arial, sans-serif;
+            letter-spacing: 3px;
+            color: #666;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        header a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+
+        header a:hover { color: white; }
+
+        nav {
+            background: #1a1a1a;
+            display: flex;
+            gap: 0;
+            padding: 0 40px;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #c9a84c;
+        }
+
+        .nav-left { display: flex; align-items: center; }
+
+        .nav-about {
+            color: #aaa;
+            text-decoration: none;
+            padding: 14px 20px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .nav-about:hover { color: white; }
+
+        nav button {
+            background: none;
+            border: none;
+            color: #aaa;
+            padding: 14px 20px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        nav button:hover, nav button.active {
+            color: white;
+            border-bottom-color: #e63946;
+        }
+
+        .search-wrap {
+            padding: 8px 0;
+        }
+
+        .search-wrap input {
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 20px;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            padding: 7px 16px;
+            width: 220px;
+            outline: none;
+            transition: border-color 0.2s, width 0.2s;
+        }
+
+        .search-wrap input::placeholder { color: #666; }
+        .search-wrap input:focus {
+            border-color: #555;
+            width: 260px;
+        }
+
+        .hero {
+            background: #111;
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .hero p {
+            color: #888;
+            font-size: 18px;
+            font-family: Arial, sans-serif;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #e63946;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e63946;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-top: 4px solid #e63946;
+        }
+
+        .card[data-category="Football"] { border-top-color: #2563eb; }
+        .card[data-category="Economy"]  { border-top-color: #16a34a; }
+        .card[data-category="Companies"] { border-top-color: #9333ea; }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        .card-body { padding: 20px; }
+
+        .card-category {
+            font-size: 11px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #e63946;
+            margin-bottom: 8px;
+        }
+
+        .card[data-category="Football"] .card-category { color: #2563eb; }
+        .card[data-category="Economy"]  .card-category { color: #16a34a; }
+        .card[data-category="Companies"] .card-category { color: #9333ea; }
+
+        .card h2 {
+            font-size: 18px;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #555;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-date {
+            font-size: 12px;
+            color: #999;
+            font-family: Arial, sans-serif;
+        }
+
+        .card-read-time {
+            font-size: 12px;
+            color: #bbb;
+            font-family: Arial, sans-serif;
+        }
+
+        .empty {
+            text-align: center;
+            color: #999;
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            grid-column: 1/-1;
+        }
+
+        footer {
+            background: #111;
+            color: #666;
+            text-align: center;
+            padding: 30px;
+            font-size: 13px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div>
+        <h1>MATTHEW MALLIA</h1>
+        <div class="header-sub">Analysis &amp; Commentary</div>
+    </div>
+    <a href="/admin.html">+ New Article</a>
+</header>
+
+<nav>
+    <div class="nav-left">
+        <button class="active" onclick="filterCategory('all', this)">All</button>
+        <button onclick="filterCategory('Football', this)">Football</button>
+        <button onclick="filterCategory('Economy', this)">Economy</button>
+        <button onclick="filterCategory('Companies', this)">Companies</button>
+        <a href="/" class="nav-about">About</a>
+    </div>
+    <div class="search-wrap">
+        <input type="text" id="search-input" placeholder="Search articles..." oninput="onSearch()">
+    </div>
+</nav>
+
+<main>
+    <div class="section-title" id="section-label">Latest Articles</div>
+    <div class="articles-grid" id="articles-grid">
+        <div class="empty">Loading articles...</div>
+    </div>
+</main>
+
+<footer>
+    &copy; 2026 Matthew Mallia. All rights reserved.
+</footer>
+
+<script>
+    let currentCategory = 'all';
+    let allArticles = [];
+
+    async function loadArticles(category) {
+        const url = category === 'all' ? '/api/articles' : `/api/articles?category=${category}`;
+        const res = await fetch(url);
+        allArticles = await res.json();
+        applySearch();
+    }
+
+    function onSearch() {
+        applySearch();
+    }
+
+    function applySearch() {
+        const query = document.getElementById('search-input').value.trim().toLowerCase();
+        const filtered = query
+            ? allArticles.filter(a =>
+                a.title.toLowerCase().includes(query) ||
+                a.summary.toLowerCase().includes(query) ||
+                a.category.toLowerCase().includes(query))
+            : allArticles;
+        renderArticles(filtered);
+    }
+
+    function readingTime(content) {
+        const words = (content || '').trim().split(/\s+/).length;
+        const mins = Math.max(1, Math.ceil(words / 200));
+        return `${mins} min read`;
+    }
+
+    function renderArticles(articles) {
+        const grid = document.getElementById('articles-grid');
+        if (articles.length === 0) {
+            grid.innerHTML = '<div class="empty">No articles found. <a href="/admin.html">Add one.</a></div>';
+            return;
+        }
+        grid.innerHTML = articles.map(a => `
+            <div class="card" data-category="${a.category}" onclick="window.location='/article.html?id=${a.id}'">
+                <div class="card-body">
+                    <div class="card-category">${a.category}</div>
+                    <h2>${a.title}</h2>
+                    <p>${a.summary}</p>
+                    <div class="card-footer">
+                        <span class="card-date">${formatDate(a.date)}</span>
+                        <span class="card-read-time">${readingTime(a.content)}</span>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function filterCategory(category, btn) {
+        currentCategory = category;
+        document.getElementById('search-input').value = '';
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const label = category === 'all' ? 'Latest Articles' : category;
+        document.getElementById('section-label').textContent = label;
+        loadArticles(category);
+    }
+
+    function formatDate(dateStr) {
+        const d = new Date(dateStr);
+        return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    loadArticles('all');
+</script>
+
+</body>
+</html>

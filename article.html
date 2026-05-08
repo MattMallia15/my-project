@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article — Matthew Mallia</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: #fafafa;
+            color: #1a1a1a;
+        }
+
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            width: 0%;
+            background: #e63946;
+            z-index: 999;
+            transition: width 0.1s linear;
+        }
+
+        header {
+            background: #111;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #c9a84c;
+        }
+
+        header h1 {
+            font-size: 22px;
+            letter-spacing: 3px;
+            cursor: pointer;
+        }
+
+        .header-sub {
+            font-size: 11px;
+            font-family: Arial, sans-serif;
+            letter-spacing: 3px;
+            color: #666;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        header a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+
+        header a:hover { color: white; }
+
+        .article-wrap {
+            max-width: 720px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .back {
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            color: #999;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 32px;
+        }
+
+        .back:hover { color: #333; }
+
+        .article-category {
+            font-size: 12px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #e63946;
+            margin-bottom: 14px;
+        }
+
+        .article-category.Football  { color: #2563eb; }
+        .article-category.Economy   { color: #16a34a; }
+        .article-category.Companies { color: #9333ea; }
+
+        .article-title {
+            font-size: 36px;
+            line-height: 1.25;
+            margin-bottom: 16px;
+        }
+
+        .article-meta {
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 36px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            gap: 16px;
+        }
+
+        .article-content {
+            font-size: 18px;
+            line-height: 1.85;
+            color: #222;
+        }
+
+        .article-content p {
+            margin-bottom: 22px;
+            white-space: pre-wrap;
+        }
+
+        .delete-btn {
+            margin-top: 50px;
+            padding: 10px 20px;
+            background: none;
+            border: 1px solid #ddd;
+            color: #999;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .delete-btn:hover {
+            border-color: #e63946;
+            color: #e63946;
+        }
+
+        footer {
+            background: #111;
+            color: #666;
+            text-align: center;
+            padding: 30px;
+            font-size: 13px;
+            font-family: Arial, sans-serif;
+            margin-top: 80px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<header>
+    <div onclick="window.location='/'" style="cursor:pointer">
+        <h1>MATTHEW MALLIA</h1>
+        <div class="header-sub">Analysis &amp; Commentary</div>
+    </div>
+    <a href="/admin.html">+ New Article</a>
+</header>
+
+<nav style="background:#1a1a1a;padding:0 40px;display:flex;border-bottom:2px solid #c9a84c;">
+    <a href="/articles" style="color:#aaa;text-decoration:none;padding:14px 20px;font-size:14px;font-family:Arial,sans-serif;border-bottom:3px solid transparent;transition:all 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#aaa'">Articles</a>
+    <a href="/" style="color:#aaa;text-decoration:none;padding:14px 20px;font-size:14px;font-family:Arial,sans-serif;border-bottom:3px solid transparent;transition:all 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#aaa'">About</a>
+</nav>
+
+<div class="article-wrap">
+    <a href="/articles" class="back">&#8592; Back to all articles</a>
+    <div id="article-content">Loading...</div>
+</div>
+
+<footer>
+    &copy; 2026 Matthew Mallia. All rights reserved.
+</footer>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    window.addEventListener('scroll', () => {
+        const doc = document.documentElement;
+        const scrolled = doc.scrollTop || document.body.scrollTop;
+        const total = doc.scrollHeight - doc.clientHeight;
+        const pct = total > 0 ? (scrolled / total) * 100 : 0;
+        document.getElementById('progress-bar').style.width = pct + '%';
+    });
+
+    function readingTime(content) {
+        const words = (content || '').trim().split(/\s+/).length;
+        return Math.max(1, Math.ceil(words / 200)) + ' min read';
+    }
+
+    const categoryColors = { Football: '#2563eb', Economy: '#16a34a', Companies: '#9333ea' };
+
+    async function loadArticle() {
+        const res = await fetch(`/api/articles/${id}`);
+        if (!res.ok) {
+            document.getElementById('article-content').innerHTML = '<p>Article not found.</p>';
+            return;
+        }
+        const a = await res.json();
+        document.title = `${a.title} — Matthew Mallia`;
+
+        const color = categoryColors[a.category] || '#e63946';
+        document.getElementById('progress-bar').style.background = color;
+
+        const date = new Date(a.date).toLocaleDateString('en-GB', {
+            day: 'numeric', month: 'long', year: 'numeric'
+        });
+
+        document.getElementById('article-content').innerHTML = `
+            <div class="article-category ${a.category}" style="color:${color}">${a.category}</div>
+            <h1 class="article-title">${a.title}</h1>
+            <div class="article-meta">
+                <span>${date}</span>
+                <span>${readingTime(a.content)}</span>
+            </div>
+            <div class="article-content"><p>${a.content}</p></div>
+            <button class="delete-btn" onclick="deleteArticle(${a.id})">Delete article</button>
+        `;
+    }
+
+    async function deleteArticle(id) {
+        if (!confirm('Delete this article?')) return;
+        await fetch(`/api/articles/${id}`, { method: 'DELETE' });
+        window.location = '/';
+    }
+
+    loadArticle();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Article — Matthew Mallia</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fafafa;
+            color: #1a1a1a;
+        }
+
+        header {
+            background: #111;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #c9a84c;
+        }
+
+        header h1 {
+            font-size: 22px;
+            letter-spacing: 3px;
+            font-family: Georgia, serif;
+            cursor: pointer;
+        }
+
+        .header-sub {
+            font-size: 11px;
+            font-family: Arial, sans-serif;
+            letter-spacing: 3px;
+            color: #666;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        header a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        header a:hover { color: white; }
+
+        .form-wrap {
+            max-width: 720px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .form-wrap h2 {
+            font-size: 22px;
+            margin-bottom: 32px;
+            font-family: Georgia, serif;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+        }
+
+        label {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #666;
+        }
+
+        .char-count {
+            font-size: 12px;
+            color: #bbb;
+        }
+
+        .char-count.warn { color: #f59e0b; }
+        .char-count.over { color: #e63946; }
+
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            font-family: inherit;
+            background: white;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #4f46e5;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        #content {
+            font-family: Georgia, serif;
+            min-height: 320px;
+            line-height: 1.8;
+        }
+
+        .submit-btn {
+            background: #111;
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .submit-btn:hover { background: #333; }
+        .submit-btn:disabled { background: #888; cursor: default; }
+
+        .success {
+            display: none;
+            background: #d1fae5;
+            border: 1px solid #6ee7b7;
+            color: #065f46;
+            padding: 14px 18px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        footer {
+            background: #111;
+            color: #666;
+            text-align: center;
+            padding: 30px;
+            font-size: 13px;
+            margin-top: 80px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div onclick="window.location='/'" style="cursor:pointer">
+        <h1>MATTHEW MALLIA</h1>
+        <div class="header-sub">Analysis &amp; Commentary</div>
+    </div>
+    <a href="/">&#8592; Back to home</a>
+</header>
+
+<div class="form-wrap">
+    <h2>Write a New Article</h2>
+
+    <form id="article-form">
+        <div class="form-group">
+            <div class="label-row"><label>Title</label></div>
+            <input type="text" id="title" placeholder="Enter article title" required>
+        </div>
+
+        <div class="form-group">
+            <div class="label-row"><label>Category</label></div>
+            <select id="category" required>
+                <option value="">Select a category</option>
+                <option value="Football">Football</option>
+                <option value="Economy">Economy</option>
+                <option value="Companies">Companies</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <div class="label-row">
+                <label>Summary (shown on homepage)</label>
+                <span class="char-count" id="summary-count">0 / 160</span>
+            </div>
+            <textarea id="summary" placeholder="Write a short 1-2 sentence summary..." style="min-height:80px" maxlength="200" oninput="updateCount()" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <div class="label-row"><label>Article Content</label></div>
+            <textarea id="content" placeholder="Write your full article here..." required></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submit-btn">Publish Article</button>
+    </form>
+
+    <div class="success" id="success-msg">
+        Article published! <a href="/articles">View articles</a>
+    </div>
+</div>
+
+<footer>
+    &copy; 2026 Matthew Mallia. All rights reserved.
+</footer>
+
+<script>
+    function updateCount() {
+        const val = document.getElementById('summary').value.length;
+        const el = document.getElementById('summary-count');
+        el.textContent = `${val} / 160`;
+        el.className = 'char-count' + (val > 160 ? ' over' : val > 120 ? ' warn' : '');
+    }
+
+    document.getElementById('article-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('submit-btn');
+        btn.disabled = true;
+        btn.textContent = 'Publishing...';
+
+        const article = {
+            title: document.getElementById('title').value,
+            category: document.getElementById('category').value,
+            summary: document.getElementById('summary').value,
+            content: document.getElementById('content').value,
+        };
+
+        const res = await fetch('/api/articles', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(article)
+        });
+
+        if (res.ok) {
+            document.getElementById('article-form').reset();
+            updateCount();
+            document.getElementById('success-msg').style.display = 'block';
+        }
+
+        btn.disabled = false;
+        btn.textContent = 'Publish Article';
+    });
+</script>
+
+</body>
+</html>
