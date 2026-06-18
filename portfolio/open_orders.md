@@ -7,5 +7,5 @@
 | PLTR   | NASDAQ   | BUY    | 14  | 125.00 | USD     | Add to existing 10sh |
 | PKO    | WSE      | BUY    | 150 | 92.00 | PLN      | Add to existing 36sh |
 | WBD    | NASDAQ   | SELL   | 170 | 30.00 | USD     | Merger-arb exit — amended 2026-06-18 from $29 (Paramount takeout $31 + ticking) |
-| SRL    | ASX      | BUY    | 185 | 10.00 | AUD     | Add to existing 60sh |
+| SRL    | ASX      | BUY    | 150 | 12.50 | AUD     | Add to existing 60sh — amended 2026-06-18 from 185 @ A$10 (was -41% below market, now -26%) |
 | RIO    | LSE      | BUY    | 22  | 7144.00 | GBp    | Add to existing 20sh |

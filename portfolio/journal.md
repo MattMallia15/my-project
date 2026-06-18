@@ -39,3 +39,17 @@ Invalidates:
 - Higher counter-bid emerges (unlikely but not zero) → raise limit accordingly.
 - Spread doesn't narrow within 90 days → accept holding to close for the full $31.
 Tag: rebalance (merger-arb event trade)
+
+---
+
+## 2026-06-18 — AMEND BUY SRL (185 @ A$10 → 150 @ A$12.50)
+Size: 150 shares (~A$1,875 at fill, ~$1,325 USD, ~1.2% of book)
+Price: BUY 150 @ A$12.50, GTC
+Reason: Spot A$16.87 (+89.9% unrealized on existing 60sh). Old limit at A$10 was -41% below market — effectively a "crash-only" trigger. New $12.50 is -26% below — a moderate-pullback add level if the speculative momentum cools. Size cut from 185 → 150 to keep total dollar add roughly the same as the prior order. If filled, blended avg becomes ~A$11.47 across 210 sh.
+Invalidates:
+- Order fills but SRL keeps falling past A$10 → re-evaluate; the +90% momentum thesis broke.
+- A pullback to A$13-14 occurs without filling and SRL re-rallies → may need to raise the limit OR accept missed entry.
+- Outcome of FID decision (H2 2026) negative → exit existing position regardless of limit status.
+Tag: tactical (speculative — outside value framework, explicit add-to-winner trade)
+
+**Outstanding SRL question: the +90% gift on the existing 60 sh.** Adding more is a "double down on the gift" move. The "take some off" decision is still open — recommend writing a trim trigger as a separate journal entry (e.g., "trim 30 sh if SRL > A$20" or "trim half if SRL > A$22 with no FID milestone in hand").
