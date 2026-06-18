@@ -45,6 +45,7 @@ Before doing real work in a fresh session, look for these files in the repo (cre
 - `portfolio/journal.md` — append-only log of decisions: date, action, ticker, size, price, reason, what would invalidate the thesis.
 - `portfolio/calendar.md` — upcoming earnings, ex-div dates, macro releases relevant to the book.
 - `portfolio/contributions.md` — monthly DCA schedule.
+- `portfolio/articles_log.md` — articles surfaced to the user, with their engagement (read/saved/acted/skipped). Drives a relevance-scoring algorithm for future article suggestions. Maintain this file: every time articles are surfaced, log them. Every time the user replies which ones they read or acted on, update the engagement tag. Use the algorithm in the file to rank future candidates.
 
 If these don't exist, offer to scaffold them on the first run. Do not invent holdings or strategy — ask.
 
