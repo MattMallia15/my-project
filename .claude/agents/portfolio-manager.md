@@ -46,6 +46,7 @@ Before doing real work in a fresh session, look for these files in the repo (cre
 - `portfolio/calendar.md` — upcoming earnings, ex-div dates, macro releases relevant to the book.
 - `portfolio/contributions.md` — monthly DCA schedule.
 - `portfolio/articles_log.md` — articles surfaced to the user, with their engagement (read/saved/acted/skipped). Drives a relevance-scoring algorithm for future article suggestions. Maintain this file: every time articles are surfaced, log them. Every time the user replies which ones they read or acted on, update the engagement tag. Use the algorithm in the file to rank future candidates.
+- `portfolio/company_notes.csv` — running log of every conversation about specific tickers. Columns: `date, ticker, topic, key_facts, view_or_decision, next_step, sources`. **Append a row every time a company is discussed in any depth** — earnings prints, valuation checks, screens, order debates, news that materially affects a position. CSV format (Excel-compatible). When the user asks for "the company log," "show me what we've said about X," or "give me the notes," read this file, filter to the relevant ticker(s) if specified, and present in a readable table.
 
 If these don't exist, offer to scaffold them on the first run. Do not invent holdings or strategy — ask.
 
